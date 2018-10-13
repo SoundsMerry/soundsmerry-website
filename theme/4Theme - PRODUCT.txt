@@ -1,0 +1,341 @@
+{{ ------------BEGIN THEME SETTINGS AND CONTROLS------------ }}
+
+{% assign: Product_Options_Title = "Size" %}
+{% assign: Add_to_Cart_Text = "Add to Cart" %}
+
+
+{{ --PRODUCT DESCRIPTION / TABS-- }}
+
+{% assign: Tabs = "Details|Shipping|Questions" | split: '|' %}
+
+{% assign: tab_content_split = '[tab]' %}
+
+
+{{ --RELATED PRODUCTS AREA -- }}
+
+{% assign: Show_Related_Products = 'Yes' %}
+
+{% assign: Related_Products_Text = "Similar Products" %}
+{% assign: Related_Products_Per_Row = 4 %}
+
+{{ ------------END THEME SETTINGS AND CONTROLS------------ }}
+
+
+
+<div id="product-content" class="row-fluid">
+  
+  
+  <div class="flexslider visible-phone">
+<ul class="slides">
+{% for photo in product.photos %} <li><img src="{{ photo.url }}"></li>{% endfor %}
+</ul>
+</div>
+
+    
+  <div id="product_images" class="span8 hidden-phone">
+          <li class="featured" {% if product.image_count <= 1 %}style="width:100%"{% endif %}>
+              <a href="{{ product.photo.url }}" >
+                {% if product.on_sale %}<div id="sale"><span class="onsale">On Sale</span></div>{% endif %}
+                 {% case product.status %}
+                  
+                  {% when 'coming-soon' %}<div id="coming-soon"><span class="soon">Coming Soon</span></div>
+                  {% endcase %}
+              <img src="{{ product.photo.url }}" alt="Image of {{ product.name | escape }}" />
+               </a>
+          </li>
+          {% if product.image_count > 1 %}
+            <ul id="product_thumbnails">
+                  
+                  {% for photo in product.photos %}                  
+                  <li class="thumbnail">
+                    <a href="{{ photo.url }}" onclick='return false;'>
+                    <img src="{{ photo.url }}" alt="Image of {{ product.name | escape }}" />
+                    </a>
+                  </li>
+                  {% endfor %}
+        </ul>
+          {% endif %}
+          
+
+  </div>
+
+  
+
+  <div id="product-details" class="span4">
+    <h3 class="name"><span>{{ product.name }}</span></h3>
+          <h3 class="price"><span>{{ product.price | money_with_sign }}</span></h3>
+  
+    {% assign description = product.description | split: tab_content_split %}
+    
+         {% capture Short_Description %} 
+          <div class="intro-info">{{ description[0] | paragraphs }}</div>
+         {% endcapture %}
+
+        
+         {% capture Full_Description %} 
+          {% if description != blank %}
+    <div id="product-desc" class='info'>
+             
+             {% if description[1] != blank %}     
+                <ul class='tabs'>
+                 {% if description[1] != blank %}<li class="t1"><a href="#{{ Tabs[0] | downcase | replace: ' ' , '_' | escape }}_panel">{{ Tabs[0] }}</a></li>{% endif %}
+                 {% if description[2] != blank %}<li class="t2"><a href="#{{ Tabs[1] | downcase | replace: ' ' , '_' | escape }}_panel">{{ Tabs[1] }}</a></li>{% endif %}
+                 {% if description[3] != blank %}<li class="t3"><a href="#{{ Tabs[2] | downcase | replace: ' ' , '_' | escape }}_panel">{{ Tabs[2] }}</a></li>{% endif %}
+                </ul>
+             {% endif %}
+                
+         {% if description[1] != blank %}
+                  <div class="inner-info">
+                   
+                  {% if description[1] != blank %}
+                     <div id="{{ Tabs[0] | downcase | replace: ' ' , '_' | escape }}_panel">
+                      {{ description[1] | paragraphs | remove: tab_content_split }}
+                     </div>
+                  {% endif %}
+
+                  {% if description[2] != blank %}
+                     <div id="{{ Tabs[1] | downcase | replace: ' ' , '_' | escape }}_panel">
+                      {{ description[2] | paragraphs | remove: tab_content_split }}
+                     </div>
+                  {% endif %}
+
+                 {% if description[3] != blank %}
+                     <div id="{{ Tabs[2] | downcase | replace: ' ' , '_' | escape }}_panel">
+                      {{ description[3] | paragraphs | remove: tab_content_split }}
+                     </div>
+                 {% endif %}
+
+      
+                </div>
+    {% endif %}
+      
+      
+
+    </div>
+        {% endif %}
+           {% endcapture %}
+                              
+          
+      {% capture Add_to_Cart_Button %}    
+          
+        {% case product.status %}
+    
+    
+    
+  {% when 'active' %}
+            
+<form method="post" id="cart_add_form" action="/cart">
+          {% if product.variants.size > 1 %}
+         <span class="option_label">{{ Product_Options_Title }}</span>
+            <select id="variant_id">
+              {% for variant in product.variants %}
+                {% if variant.quantity > 0 %}
+                  <option value="{{ variant.id }}">{{ variant.name }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          {% else %}
+            <div class="{% if product.variants.first.name != 'Default' %}single-variant{% endif %}">
+              <input type="hidden" id="variant_id" value="{{ product.variants.first.id }}" />
+              {% if product.variants.first.name != 'Default' %}
+                <span>{{ product.variants.first.name }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
+          <input type="button" id="add_to_cart_button" class="button add_to_cart_button" value="{{ Add_to_Cart_Text }}"/>
+          <div class="clearfix"></div>
+        </form>
+          
+    
+  <div id="add_notice" style="display:none;">
+        <div id="add_error" style="display:none;"></div>
+        <div id="add_success" style="display:none;">
+          
+          <p style="color:black;" id="item_added"><span id="added_to_cart_label">Added to cart.</span></p>
+          
+         <a href="" class="button" style="color:white" id="add_notice_checkout">◦ CHECKOUT ◦</a>
+          
+          <p id="items_in_cart"><a href="" target="new" style="color:black" id="add_notice_checkout_cart">
+            <span id="add_notice_cart_count"></span>
+            
+            </a>
+          </p>
+        </div>
+      </div>
+      
+    
+  {% when 'coming-soon' %}
+    
+    <div class="soon"> 
+      <h4><span>Coming Soon</span></h4>
+    </div>  
+    
+  {% endcase %}
+          
+    {% endcapture %}      
+    
+ {% capture Social_Icons %}                   
+<!-- AddToAny BEGIN -->
+<div class="a2a_kit a2a_default_style">
+<a class="a2a_dd" href="http://www.addtoany.com/share_save">Share</a>
+<span class="a2a_divider"></span>
+<a class="a2a_button_facebook"></a>
+<a class="a2a_button_twitter"></a>
+<a class="a2a_button_google_plus"></a>
+<a class="a2a_button_pinterest"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<!-- AddToAny END -->
+ {% endcapture %}
+
+
+                    {{ Social_Icons }}
+                    {{ Short_Description }}
+                    {{ Add_to_Cart_Button }}
+                    {{ Full_Description }}
+                    
+
+    
+  </div>
+  
+
+  </div>
+  
+{{ -----BEGIN RELATED PRODUCTS SECTION---- }}
+  
+{% assign: ppr = Related_Products_Per_Row %}
+                    
+{% assign currentProduct = product.id %}
+{% assign counter = 0 %}
+
+{% capture relpro %}{% if ppr == 1 %}{{ 1 }}{% elsif ppr == 2 %}{{ 2 }}{% elsif ppr == 3 %}{{ 3 }}{% elsif ppr == 4 %}{{ 4 }}{% elsif ppr == 5 %}{{ 5 }}{% endif %}{% endcapture %}
+
+{% if Show_Related_Products != 'No' %}
+  
+{% for collection in product.categories limit: 1 %}
+                    
+{% assign: Related_Products_Margin = 3 %}  {{ Options: 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 }} 
+                                      
+{% assign: ppr = Related_Products_Per_Row %}
+{% assign: pmg = Related_Products_Margin %}
+                    
+                    
+{% capture p_mrgn %}{% if pmg == 0 %}mg-O{% endif %}{% if pmg == 0.5 %}mg-OpV{% endif %}{% if pmg == 1 %}mg-I{% endif %}{% if pmg == 1.5 %}mg-IpV{% endif %}{% if pmg == 2 %}mg-II{% endif %}{% if pmg == 2.5 %}mg-IIpV{% endif %}{% if pmg == 3 %}mg-III{% endif %}{% endcapture %}
+{% capture p_pr %}{% if ppr == 2 %}ii_ipr{% endif %}{% if ppr == 3 %}iii_ipr{% endif %}{% if ppr == 4 %}iv_ipr{% endif %}{% if ppr == 5 %}v_ipr{% endif %}{% endcapture %}
+
+
+<div id="related_products" class="{{ p_pr }} {{ p_mrgn }}">
+          
+     <h3 id="related-products-text">{{ Related_Products_Text }}</h3>
+          
+    <div class="related_products {{ collection.permalink }} row-fluid">
+        {% for product in collection.products limit: relpro %}
+
+       {% if product.id != currentProduct and counter < 3 %}
+        
+       <div id="product-{{ forloop.index }}" class="item product {% if ppr == 'two' %}{% cycle '', 'last' %}{% elsif ppr == 'three' %}{% cycle '', '', 'last' %}{% elsif ppr == 'four' %}{% cycle '', '', '', 'last' %}{% elsif ppr == 'five' %}{% cycle '', '', '', '', 'last' %}{% endif %}">
+        <a href="{{ product.url }}" title="View {{ product.name | escape }}" class="product-a">
+          {% if product.on_sale %}<div id="sale"><span class="onsale">On Sale</span></div>{% endif %}
+                 {% case product.status %}
+                  
+                  {% when 'coming-soon' %}<div id="coming-soon"><span class="soon">Coming Soon</span></div>
+                  {% endcase %}
+           <img class="product-img" src="{{ product.photo.url }}" alt="Image of {{ product.name | escape }}" />
+            <div class="product-info">
+        <h3 class="product-title"><span>{{ product.name }}</span></h3>
+        <p class="product-price"><span>{{ product.price | money_with_sign }}</span></p>  
+      </div>
+        </a>
+        </div>
+
+<p class="current-product-counter">{{ counter | plus: 1 }}</p>
+         
+            {% endif %}
+
+          
+        {% endfor %}
+      
+      
+        </div>
+    
+{% endfor %}
+
+{% endif %}
+</div>
+                    
+
+                    
+                    
+{{ -----END RELATED PRODUCTS SECTION---- }}
+
+<link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/themefiend/theme_plugins/colorbox/colorbox.css">
+<script type="text/javascript" src="https://s3.amazonaws.com/themefiend/theme_plugins/colorbox/jquery.colorbox-min.js"></script>
+<script type="text/javascript" charset="utf-8">
+   
+   (function($) {
+      $(document).ready(function(){
+      $('.flexslider').flexslider({
+        animation: "slide",
+useCSS: false,
+        start: function(slider){
+          $('body').removeClass('loading');
+        }
+      });
+      
+   $("#product-form .options li:first input").trigger("click"); 
+    $("#product-form .options li:first").addClass("selected");
+                    
+   $("#product-form .options li input").on('click', function() {
+      $("#product-form .options li").removeClass("selected");
+      $(this).parents("#product-form .options li").addClass("selected");
+   });
+      
+$(".thumbnail img").hover(function(){
+    $('.featured img').attr('src',$(this).attr('src'));
+});
+  $(".thumbnail a").hover(function(){
+    $('.featured a').attr('href',$(this).attr('href'));
+});
+          $(".featured a").colorbox();
+   
+  
+  $("ul.tabs").each(function(){
+  var $active, $content, $links = $(this).find('a');
+  $active = $($links.filter('[href="'+location.hash+'"]')[0] || $links[0]);
+  $active.addClass('active');
+  $content = $($active.attr('href'));
+  $links.not($active).each(function () {
+    $($(this).attr('href')).hide();
+  });
+  $(this).on('click', 'a', function(e){
+    $active.removeClass('active');
+    $content.hide();
+    $active = $(this);
+    $content = $($(this).attr('href'));
+
+    $active.addClass('active');
+    $content.show();
+
+    e.preventDefault();
+  });
+
+});
+
+
+                    
+$('.page-title').remove();
+                    
+$('#product-desc').removeClass('hide');
+                    
+    });
+   })(jQuery);
+</script>
+
+<script>
+  var json_product = {{ product | json }}
+</script>
+
+
+
+
+​

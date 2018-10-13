@@ -1,0 +1,743 @@
+{{ DELILAH - Layout Page }}
+
+{{ ------------BEGIN THEME SETTINGS AND CONTROLS------------ }}
+
+{{ --- Extra Links -- }}
+{% assign: Home_Link_Name = "Home" %}
+{% assign: Shop_Link_Name = "Shop" %}
+{% assign: All_Products_Link_Name = "All Products" %}
+
+{% assign: Categories_in_Nav_Display = 'Dropdown' %} {{ Options: 'Dropdown' or 'Main Nav' }}
+
+{% assign: Home_Slider_Style = 'Full Screen' %} {{ Options: 'Normal' or 'Full Screen' }}
+{% assign: Fixed_Header_on_Scroll = 'No' %} {{ Options: 'Yes' or 'No' }}
+
+{{ --- Header Message -- }}
+
+{% assign: Header_Message_Heading = "Record Label ◦ Multimedia Publishing" %}
+{% assign: Header_Message_Sub_Heading = "FREE WORLDWIDE SHIPPING" %}
+
+{{ ----FAVICON SETTINGS---- }}
+
+{% assign: Favicon_URL = '' %}
+
+
+{{ --FOOTER-- }}
+
+{% assign: Show_2nd_Footer_Navigation = 'Yes' %}
+
+{% assign: Remove_Designed_by_Theme_Fiend_Credit = 'No' %} {{ Options: 'Yes' or 'No' }}
+
+
+{% assign: Footer_Column_Headings = "Company|Help|Find Us On|Join Our Mailing List" %}
+
+{% assign: Contact_Link_Footer_Column = 1 %} {{ Options: 1 or 2 }}
+
+{% assign: FAQ_Link_Footer_Column = 2 %} {{ Options: 1 or 2 }}
+
+
+{{ ------------END THEME SETTINGS AND CONTROLS------------ }}
+
+
+<!doctype html>
+<!--[if lte IE 9 ]><html class="ie" lang="en"><![endif]-->
+<!--[if gt IE 9 ]><html lang="en"><![endif]-->
+<!--[if !IE ]><html lang="en"><![endif]-->
+
+
+<head>
+    <meta charset="utf-8">
+
+   <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+    <meta http-equiv="cleartype" content="on">
+
+
+
+    {{ page | open_graph_tags }}
+    {{ head_content }}
+
+    <script src="/assets/theme_cooper.js"></script>
+
+      {{ -- Default SEO Meta Title and Description Block -- }}
+    {% unless custom_seo_meta_tags contains 'es' %}    
+    <title>{{ page.name | remove: '(&)' | remove: '(%)' | remove: '(:)' | remove: '(*)' | remove: '(!)' | remove: '(!!)' | remove: '(!!!)' | remove: '(!!!!)' | remove: '(;)' }} | {{ store.name }}</title>
+    <meta name="description" content="{{ page.description | strip_newlines | escape }}">
+    <meta name="keywords" content="{{ page.keywords }}">
+    {% else %}
+    {{ seo_meta_tags_insert }}
+    {% endunless %}
+  
+    <!--[if IE ]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->  
+
+    <meta name="author" content="{{ store.name }}">
+    
+    {% if product != blank and page.full_url contains '/product/' %}
+    <meta property="og:title" content="{{ product.name | escape }}">
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="{{ page.full_url }}">
+    <meta property="og:image" content="{{ product.image.url }}">
+    <meta property="og:site_name" content="{{ store.name | escape }}">
+    {% endif %}  
+  
+  
+ <link rel="stylesheet" href="https://s3.amazonaws.com/themefiend/css/bootstrap.min.css">
+ <link rel="stylesheet" href="https://s3.amazonaws.com/themefiend/css/bootstrap-responsive.min.css">
+
+ <link rel="stylesheet" href="http://themefiend.com/themehost/delilah/Delilah_theme_import.css">
+  
+ <link rel="stylesheet" href="https://themefiend.com/themehost/_general/css/item_grid_framework.css">
+
+ <link rel="stylesheet" href="https://s3.amazonaws.com/themefiend/js/flexslider/flexslider.css">
+
+  
+  
+ 
+    <!-- CSS Edit Page Styles -->
+    <link rel="stylesheet" type="text/css" href="{{ theme | theme_css_url }}">
+  
+   <!-- Font Awesome -->
+ <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  
+    
+    <script type="text/javascript" src="https://s3.amazonaws.com/themefiend/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    
+    
+{{ --BEGIN FAVICON CODE-- }}    
+    
+    
+{% capture favicon_url_string %}{{ Favicon_URL | remove: 'png'| remove: 'jpg'| remove: 'jpeg' | remove: 'gif' }}{% endcapture %}
+    
+{% capture favicon_url_extention %}{{ Favicon_URL | remove: favicon_url_string }}{% endcapture %}
+    
+    
+{% unless Favicon_URL == blank or Favicon_URL == " " %}<link rel="icon" type="image/{{ favicon_url_extention }}" href="{{ Favicon_URL }}">{% endunless %}
+    
+{{ --END FAVICON CODE-- }}
+    
+  
+  </head>
+  
+  <body id="{{ page.permalink }}-page" class="{% if page.full_url contains 'faq' %}custom{% endif %} {{ page.permalink }} {{ page.category }}{% if Home_Slider_Style contains 'reen' %} full_screen header_fade{% endif %}{% if Fixed_Header_on_Scroll contains 'es' and page.permalink == 'home' %} fixed_header{% endif %}">
+    
+    {{ --BEGIN MINICART-- }}
+    
+    
+       
+       {% capture minicart %}
+       <div id="minicart">
+         <a href="https://www.storenvy.com/checkout/soundsmerry/cart" target="new"><li><i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="mc-title">Cart</span></li></a>
+       </div>
+       {% endcapture %}
+         
+       {{ --END MINICART-- }}
+          
+       
+        {{ --BEGIN SEARCH FORM-- }}
+          
+       {% capture search_form %}
+          <div id="search" class='hidden-phone'>
+            <form class="form-search" name="search" action="/search" method="get">
+              <button id="search-submit" name="search-submit" type="submit" title="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+               <input id="search-input" type="text" name="q" placeholder="Search" value="{{ search.term | escape }}" />
+            </form>
+          </div>
+       {% endcapture %}
+        
+ {{ --END SEARCH FORM-- }}
+    
+    {% capture Main_Header_Links %}
+          
+    
+{% capture Auto_Page_Links %}
+           
+{% for page in pages.all %}
+  {% unless page.full_url contains '/contact' or page.full_url contains '/faq' or page.name contains '(%)' or page.name contains '(&)' or page.name contains '(:)' or page.name contains '(*)' or page.full_url contains 'xy-theremin' %}
+    {% assign parent_page_name = page.name %}
+               {% assign parent_page_url = page.url %}
+    {% capture sub_page_list %}
+      {% for sub_page in pages.all %}
+      {% unless sub_page.name == parent_page_name %}
+             {% capture parent_page_string %}{{ parent_page_name }} - {% endcapture %}
+                        {% capture parent_page_url_string %}{{ parent_page_url }}-{% endcapture %}
+        {% if sub_page.url contains parent_page_url %}
+          {% assign has_sub_pages = 'true' %}
+                   {% capture new_sub_page_name %}{{ sub_page.name | replace: parent_page_string, "" }}{% endcapture %}
+          {% if sub_page.url contains parent_page_url_string %}<li>{{ sub_page | link_to: new_sub_page_name }}</li>{% endif %}
+        {% endif %}
+      {% endunless %}
+      {% endfor %}
+    {% endcapture %}
+    
+    {% assign: current_url = page.full_url %}
+ 
+    
+    {% unless page.name contains ' - ' %}
+                   {% if current_url contains page.url %}
+      <li class="block current-page">
+      {% else %}
+      <li class="block">
+      {% endif %}
+           <a href="{{ page.url }}"><span>{{ page.name }}</span></a>{% if has_sub_pages == 'true' %}<ul class='page-dropdownn category-dropdown'>{{ sub_page_list }}</ul>{% endif %}</li>
+    {% endunless %}
+ 
+    {% assign has_sub_pages = 'false' %}   
+{% endunless %}    
+  {% endfor %}
+
+ {% endcapture %}
+                          
+            {{ Auto_Page_Links }}
+                          
+  
+  {% if theme.contact_link_in_header %}
+   {% if page.full_url contains '/contact' %}
+      <li class="block current-page">
+      {% else %}
+      <li class="block">
+      {% endif %}
+  {{ pages.contact | link_to }}
+  </li>
+ {% endif %}
+ 
+   {% if theme.faq_link_in_header %}
+   {% if page.full_url contains '/faq' %}
+      <li class="block current-page">
+      {% else %}
+      <li class="block">
+      {% endif %}
+  {{ pages.faq | link_to }}
+  </li>
+ {% endif %}
+                          
+                          
+            {% endcapture %}
+                          
+                                          
+                                     
+{% capture Category_Links %}           
+                                     
+       {% for collection in collections.nav %}
+    {% assign parent_cat_name = collection.name %}
+            {% assign parent_cat_url = collection.url %}
+    {% capture sub_cat_list %}
+      {% for cat2 in collections.nav %}
+      {% unless cat2.name == parent_cat_name %}
+             {% capture parent_cat_string %}{{parent_cat_name}} - {% endcapture %}
+                          {% capture parent_cat_url_string %}{{ parent_cat_url }}-{% endcapture %}
+        {% if cat2.name contains parent_cat_name %}
+          {% assign has_sub_cats = 'true' %}
+                   {% capture new_sub_cat_name %}{{ cat2.name | replace_first: parent_cat_string, "" }}{% endcapture %}
+    {% if cat2.url contains parent_cat_url_string %}<li>{{ cat2 | link_to: new_sub_cat_name }}</li>{% endif %}
+        {% endif %}
+      {% endunless %}
+      {% endfor %}
+    {% endcapture %}
+ 
+    {% unless collection.name contains ' - ' or collection.name contains 'Home Banner' %}
+                          <li><a href="{{ collection.url }}"><span>{{ collection.name }}</span></a>{% if has_sub_cats == 'true' %}<ul id='sub-categories'><div id='subcat-container'>{{ sub_cat_list }}</div></ul>{% endif %}</li>
+    {% endunless %}
+ 
+    {% assign has_sub_cats = 'false' %}          
+  {% endfor %}
+                          
+  {% endcapture %}   
+                          
+{% capture Alternate_Category_Links %}           
+                                     
+       {% for collection in collections.nav %}
+    {% assign parent_cat_name = collection.name %}
+            {% assign parent_cat_url = collection.url %}
+    {% capture sub_cat_list %}
+      {% for cat2 in collections.nav %}
+      {% unless cat2.name == parent_cat_name %}
+             {% capture parent_cat_string %}{{parent_cat_name}} - {% endcapture %}
+                          {% capture parent_cat_url_string %}{{ parent_cat_url }}-{% endcapture %}
+        {% if cat2.name contains parent_cat_name %}
+          {% assign has_sub_cats = 'true' %}
+                   {% capture new_sub_cat_name %}{{ cat2.name | replace_first: parent_cat_string, "" }}{% endcapture %}
+    {% if cat2.url contains parent_cat_url_string %}<li>{{ cat2 | link_to: new_sub_cat_name }}</li>{% endif %}
+        {% endif %}
+      {% endunless %}
+      {% endfor %}
+    {% endcapture %}
+                          
+               {% assign: current_url = page.full_url %}
+ 
+{% unless collection.name contains ' - ' %}                          
+ 
+                   {% if current_url contains collection.url %}                          
+                   <li class="block current-page">
+      {% else %}    
+                     <li class="block">{% endif %}<a href="{{ collection.url }}"><span>{{ collection.name }}</span></a>{% if has_sub_cats == 'true' %}<ul class='category-dropdown'>{{ sub_cat_list }}</ul>{% endif %}</li>
+    {% endunless %}
+ 
+    {% assign has_sub_cats = 'false' %}          
+  {% endfor %}
+                          
+  {% endcapture %}      
+                     
+                     
+ {{ ---------------------------BEGIN MOBILE NAVIGATION AREA--------------------------- }}
+
+ <div id='mobile-sidebar-navigation' class='visible-phone span2 hidden-mobile'>          
+        
+     <div id="categories">
+    
+          <div id="search-minicart-container">{{ search_form | replace: "class='hidden-phone'" , "class='visible-phone'" }}</div>
+    
+             <ul class="categories-list">
+
+        {% if page.full_url contains '/products'  %}
+      <li class="current-page">
+      {% else %}
+      <li>
+      {% endif %}<a href="/products"><span>{{ All_Products_Link_Name }}</span></a></li>
+  {{ Category_Links | replace: "id='sub-categories'", "class='category-dropdown'" | remove: "subcat-container" }}  
+         {{ Main_Header_Links }}
+             </ul>
+    
+            </div>  
+       
+ {% capture Top_Footer %}
+    
+{{ Note: Footer code is found up here because the footer appears in the mobile sidebar navigation (in mobile view) AND the bottom of the page (in desktop/tablet view) }}
+       
+       
+    <div id="footer" class="footer hidden-phone">
+      
+      {% assign: footer_col_h = Footer_Column_Headings | split: "|" %}
+    
+        {% capture Social_Icons %}
+     <div id="socialicons">
+              {% assign Img_Lib = 'https://themefiend.com/tf-themes/_images' %}
+              {% assign Lib_Soc = '/social-btn/pack-' %}
+       <span id="social-text">{{ Social_Text }}</span>
+              <div id="icons">
+
+        {% for place in store.places %}
+            {% if place.url contains 'witter' %}<li><a href="{{ place.url }}" target="new"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                  {% elsif place.url contains 'acebook' %}<li><a href="{{ place.url }}" target="new"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+          {% elsif place.url contains 'umblr' %}<li><a href="{{ place.url }}" target="new"><i class="fa fa-tumblr" aria-hidden="true"></i></a></li>
+          {% elsif place.url contains 'outube' %}<li><a href="{{ place.url }}" target="new"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
+          {% elsif place.url contains 'imeo' %}<li><a href="{{ place.url }}" target="new"><i class="fa fa-vimeo" aria-hidden="true"></i></a></li>
+          {% elsif place.url contains 'interest' %}<li><a href="{{ place.url }}" target="new"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+          {% elsif place.url contains 'nstagram' %}<li><a href="{{ place.url }}" target="new"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+          {% elsif place.url contains 'oogle' %}<li><a href="{{ place.url }}" target="new"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+          {% else %}<li><a href="{{ place.url }}" target="new">{{ place.name }}</a></li>{% endif %}
+              {% endfor %}
+          
+        </div>         
+
+        </div>
+    {% endcapture %}
+      
+      
+    
+    
+    {% assign: nfc = Number_of_Footer_Columns %}
+    {% assign: sifcl = Social_Icons_Footer_Column_Location %}
+      
+      
+      
+      
+     <div id="inner-footer" class="three-col">
+      
+     <!--Begin Footer Col 1--><ul id="column-1" class="item footer-column">
+        
+        
+              <div id="footer-navigation">
+                
+                {% unless footer_col_h[0] == blank %}<h3>{{ footer_col_h[0] }}</h3>{% endunless %}
+             <ul>
+                 
+                {% if Show_Header_Links_in_Footer_too contains 'es' %}
+                   {{ Main_Header_Links }}
+                {% endif %}
+        
+        {% if Contact_Link_Footer_Column == 1 %}{% unless theme.contact_link_in_header %}<li>{{ pages.contact | link_to }}</li>{% endunless %}{% endif %}      
+      {% if FAQ_Link_Footer_Column == 1 %}{% unless theme.faq_link_in_header %}<li>{{ pages.faq | link_to }}</li>{% endunless %}{% endif %}
+                
+        {% for page in pages.all %}
+            {% if page.name contains '(&)' %}
+            {% unless page.name contains '(!!)' %}
+            <li><a href="{{ page.url }}">{{ page.name | remove: '(&)' | remove: '(!)' | remove: '(!!)' | remove: '(!!!)' }}</a></li>
+            {% endunless %}
+           {% endif %}               
+                {% endfor %}
+                </ul>
+
+</div>
+        
+        
+      </ul><!--End Footer Col 1-->
+    
+    
+       
+      <!--Begin Footer Col 2--><ul id="column-2" class="item footer-column">
+    
+    {% unless footer_col_h[1] == blank %}<h3>{{ footer_col_h[1] }}</h3>{% endunless %}
+       
+       {% unless Show_2nd_Footer_Navigation contains 'o' %}
+    
+        <div id="footer-navigation">
+ 
+        <ul>
+            {% if Contact_Link_Footer_Column == 2 %}{% unless theme.contact_link_in_header %}<li>{{ pages.contact | link_to }}</li>{% endunless %}{% endif %}      
+      {% if FAQ_Link_Footer_Column == 2 %}{% unless theme.faq_link_in_header %}<li>{{ pages.faq | link_to }}</li>{% endunless %}{% endif %}
+      
+                {% for page in pages.all %}
+            {% if page.name contains '(&)' %}
+          {% unless page.name contains '(!)' %}
+            <li><a href="{{ page.url }}">{{ page.name | remove: '(&)' | remove: '(!)' | remove: '(!!)' | remove: '(!!!)' }}</a></li>
+          {% endunless %}
+           {% endif %}               
+                {% endfor %}    
+        </ul>
+
+       </div>
+    {% endunless %}
+    
+    {% if sifcl == 'Column 2' %}{{ Social_Icons }}{% endif %}
+        
+      </ul><!--End Footer Col 2-->
+ 
+    
+    <!--Begin Footer Col 3--><ul id="column-3" class="item footer-column">
+    
+    {% unless footer_col_h[2] == blank %}<h3>{{ footer_col_h[2] }}</h3>{% endunless %}
+    
+   {{ Social_Icons }}
+    
+     </ul><!--End Footer Col 3-->
+    
+      
+    </div>
+      
+    </div>
+       
+{% endcapture %}
+       
+{{ Top_Footer | replace: "footer hidden-phone", "footer visible-phone" }}
+    
+  
+    </div>
+   
+{{ ---------------------------END MOBILE NAVIGATION AREA--------------------------- }}  
+    
+    
+    <div id="wrap">
+      
+          <div id="container" class="container">
+      
+
+{{ ---------------------------BEGIN HEADER AREA--------------------------- }}
+            
+             
+      <div id="header-area">
+        
+        <div id="header-contents" class="container">
+          
+          {% capture Header_Message %}<div id="header-message" class="hidden-phone">{% if Header_Message_Heading != blank %}<h2>{{ Header_Message_Heading }}</h2>{% endif %}{% if Header_Message_Sub_Heading != blank %}<span>{{ Header_Message_Sub_Heading }}</span>{% endif %}</div>{% endcapture %}
+          
+         {{ Header_Message }}
+          
+    <a class="menu-link btn visible-phone" href="#"><i class="icon-align-justify icon-{{ Header_Icon_Colors }}"></i></a>
+          
+          <div id="right-header">
+          {{ search_form }}
+          {{ minicart }}
+          </div>
+          
+        
+        <div id="header" class="{% if store.banner_image != blank %}image{% else %}no-image{% endif %}">          
+          
+          <h1><a href="/"><span>{{ store.name }}</span>{% if store.banner_image != blank %}<img class="shoplogo" src="{{ theme.banner.url }}" alt="{{ store.name | escape }}"/>{% endif %}</a></h1>
+          
+          {{ Header_Message | replace: "hidden-phone", "visible-phone" }}
+           
+  {{ ---------------------------BEGIN HEADER NAVIGATION--------------------------- }}          
+          
+    
+                 
+                          
+          <div id="header-navigation" class="hidden-phone">
+            <ul>  
+              
+              {% if Home_Link_Name != blank %}<li class="block"><a href="/"><span>{{ Home_Link_Name }}</span></a></li>{% endif %}
+          
+      {% if Categories_in_Nav_Display contains 'ain' %}  
+      {% if current_url contains collection.url  %}
+                   <li class="block current-page">{% else %}<li class="block">
+      {% endif %}
+      {% else %}
+      {% if page.full_url contains 'product' or page.full_url contains 'collection or page.full_url contains 'artist'  %}
+                   <li class="block current-page">{% else %}<li class="block">
+      {% endif %}
+      {% endif %}
+      
+      <a href="/products"><span>{{ Shop_Link_Name }}</span></a>
+                       {% if Categories_in_Nav_Display contains 'down' %}
+                     <ul class="category-dropdown">
+                       {% if All_Products_Link_Name != blank %}<li><a href="/products"><span>{{ All_Products_Link_Name }}</span></a></li>{% endif %}
+                       {% for page in pages.all %}
+                          {% if page.name contains '(*)' or page.name contains '(:)' %}
+                            <li><a href="{{ page.url }}"><span>{{ page.name | remove: '(:)' | remove: '(*)' }}</span></a></li>
+                          {% endif %}
+                       {% endfor %}
+                       {{ Category_Links }}
+                     </ul>
+                     {% endif %}
+                     </li>
+              {% if Categories_in_Nav_Display contains 'ain' %}{% for page in pages.all %}
+                     {% if page.name contains '(*)' or page.name contains '(:)' %}
+                     {% if page.full_url contains 'product' or page.full_url contains 'category' or page.full_url contains 'artist'  %}
+                   <li class="block current-page">
+      {% else %}    
+                     <li class="block">{% endif %}<a href="{{ page.url }}"><span>{{ page.name | remove: '(:)' | remove: '(*)' }}</span></a></li>
+                     {% endif %}{% endfor %}
+                     {{ Alternate_Category_Links }}
+                {% endif %}      
+              
+                     {{ Main_Header_Links }}            
+           
+                     <li class="break">&nbsp;</li>
+                     
+             </ul>    
+           </div>
+            
+         </div> <!---- End Logo-Navigation --->
+                          
+                        
+            
+                          
+{{ ---------------------------END HEADER NAVIGATION--------------------------- }}
+                            
+</div>
+          
+       </div>
+
+     
+    
+    </div>          
+{{ ---------------------------END HEADER AREA--------------------------- }}          
+         
+      
+            {{ --BEGIN ERROR DISPLAY-- }}
+        
+        <noscript>
+          <div class="error" id="error">
+            <ul>
+              <li>JavaScript must be enabled to use this store!</li>
+            </ul>
+          </div>
+        </noscript>{% if errors != blank %}
+        <div id="error" class="error">
+          <ul>{% for error in errors %}
+            <li><u>Error:</u> {{ error }}</li>{% endfor %}</ul>
+        </div>{% endif %}
+        
+      {{ --END ERROR DISPLAY-- }}
+    
+
+      
+       
+      
+        <div id="main">
+
+            
+            
+     {% if page.full_url contains 'product' or page.full_url contains 'collection' %}
+            <div id="breadcrumbs">
+              <a href="/products" title="shop"><b>Shop</b></a>
+              {% for collection in product.collections limit:1 %} &gt; {{ collection | link_to | replace: " - ", " &gt; " }}{% endfor %} &gt;
+              {{ page.name | remove: '(&)' | remove: '(%)' | remove: '(:)' | remove: '(*)' | replace: " - ", " &gt; "  }}
+            </div>
+            {% endif %}
+    
+
+           
+       {% if page.permalink == 'home' %}            
+            {{ page_content }}                      
+         {% else %}
+                     
+     {% if page.full_url contains '/collection' %}
+                     
+       {% capture category_banners %}
+
+        {% if Hide_Category_and_Artist_Title == 'Yes' %}<style type="text/css">.category-name, .page-name {display:none;}</style>{% endif %}
+        {% if collection.image != blank %}<img src="{{ collection.image }}" class="banner-image"/><style type="text/css">.page-title {margin: 0px 0px 30px}</style>{% endif %}
+
+       {% endcapture %}
+                     
+       {{ category_banners }}
+                     
+    {% endif %}
+                     
+                     
+          <div class="inner">
+                     
+    {% unless page.full_url contains '/product/' or page.full_url contains 'blog' or page.permalink contains 'home' %}
+
+                     <h1 class="page-title">{{ page.name | remove: '(&)' | remove: '(%)' | remove: '(:)' | remove: '(*)' | remove: '(!)' | remove: '(!!)' | remove: '(!!!)' }}</h1>
+                     
+     {% endunless %}
+    
+                     
+            {{ page_content }}      
+           </div>
+       {% endif %}
+                     
+                     
+
+
+  
+      </div>
+    
+{{ ---------------------------BEGIN FOOTER AREA--------------------------- }}
+{{ Note: The 'Top_Footer' full code can be found within the mobile sidebar navigation code above. Only edit these codes if you know what you're doing. }}
+       
+{{ Top_Footer }}
+    
+<div id="bottomfooter">
+
+      <div id="bf-container">   
+    
+    <div id="mobile-newletter-holder" class="visible-phone">{{ Newsletter_Form }}</div>
+    
+<span>
+    &copy; {{ 'now' | date: "%Y" }}
+                <a href="/"><b>{{ store.name }}</b></a> All Rights Reserved.</a>
+          </div>
+      
+{{ ---------------------------END FOOTER AREA--------------------------- }}
+           
+    
+    
+        </div>
+    
+     </div>
+
+<!--[if IE]>
+    <style type="text/css">
+    #header-area  {
+    padding-bottom: 15px;
+    }
+          </style>
+<![endif]-->
+              
+<style type="text/css">
+  
+  #socialicons img {height:{{ Social_Size }}px; }
+
+  
+</style>
+        
+
+
+<script type="text/javascript" src="https://s3.amazonaws.com/themefiend/js/flexslider/jquery.flexslider-min.js"></script>
+  <script type="text/javascript" src="https://s3.amazonaws.com/themefiend/js/flexslider/jquery.fitvid.js"></script>    
+  <script type="text/javacript" src="https://s3.amazonaws.com/themefiend/js/flexslider/jquery.easing.js"></script>
+        
+        <script type="text/javascript" src="https://s3.amazonaws.com/themefiend/js/bootstrap-dropdown.js"></script>
+    
+         <script type="text/javascript" src="https://s3.amazonaws.com/themefiend/theme_plugins/slimscroll/jquery.slimscroll.min.js"></script>   
+      
+      <script type="text/javascript">
+(function($) { $("body#cart-page").on("click",".remove-btn",function(e){return e.preventDefault(),$(this).closest("tr").find("input[id$=_qty]").val(0).closest("form").submit();});
+        
+$('p:empty, #wide-slider > br, #wide-slider p:empty, #home-extra-content br, #products br').remove();
+        
+
+$(".page-title").css('display','block');
+        
+$('#header-navigation li:has(.category-dropdown)').addClass('tablet-dropdown');
+        
+
+$("#header-navigation li.tablet-dropdown > a").one("click", function(event) {
+  
+event.preventDefault();
+
+});
+        
+  
+function doneResizing() {
+        if(Modernizr.mq('screen and (min-width:768px)')) {
+   $('.sb-inactive, #mobile-sidebar-navigation').slimScroll({
+        height: '100%'
+    });
+        }
+        else if(Modernizr.mq('screen and (max-width:767px)')) {
+   $('#mobile-sidebar-navigation').slimScroll({
+        height: '100%'
+    });
+        }
+    }
+    
+   $(".mobile-menu-link").click(function () {
+      $(".phonenav").toggleClass("active");
+    });
+    
+     $(".menu-link").click(function () {
+      $("#mobile-sidebar-navigation").toggleClass("hidden-mobile");
+      $("#wrap").toggleClass("sb-active");
+    });
+
+   $("#mobile-sidebar-navigation #categories li a").click(function () {
+      $("#container").toggleClass("sb-stay");
+      $("#mobile-sidebar-navigation").toggleClass("stay-mobile");
+    });
+    
+{% unless page.url contains 'cart' %}   
+  
+        $('[placeholder]').focus(function() {
+  var input = $(this);
+  if (input.val() == input.attr('placeholder')) {
+    input.val('');
+    input.removeClass('placeholder');
+  }
+}).blur(function() {
+  var input = $(this);
+  if (input.val() == '' || input.val() == input.attr('placeholder')) {
+    input.addClass('placeholder');
+    input.val(input.attr('placeholder'));
+  }
+}).blur().parents('form').submit(function() {
+  $(this).find('[placeholder]').each(function() {
+    var input = $(this);
+    if (input.val() == input.attr('placeholder')) {
+      input.val('');
+    }
+  })
+});
+  
+  {% endunless %}
+
+{% if Fixed_Header_on_Scroll contains 'es' %}
+$(window).scroll(function() {
+    if ($(window).scrollTop() > 100) {
+$('body:not(".home")').addClass('fixed_header');
+$('body.home').removeClass('full_screen');
+    }
+    else {
+$('body.home').addClass('full_screen');
+$('body:not(".home")').removeClass('fixed_header');
+    }
+});
+{% endif %}
+    
+
+ 
+
+})(jQuery);
+      </script>
+          
+
+ 
+
+</body>
+</html>
+            
+​

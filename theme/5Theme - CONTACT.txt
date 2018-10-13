@@ -1,0 +1,105 @@
+
+
+
+
+
+{{ ------------BEGIN THEME SETTINGS AND CONTROLS------------ }}
+
+
+
+{% capture Contact_Page_Intro_Text %}
+<font size="3">Please send your inquiry addressed to the appropriate Department via the Contact Form and we will get back to you.
+</font>
+
+{% endcapture %}
+
+{% capture Customer_Service_Text %}
+<font size="4"><b>DEPARTMENTS:</b></font>
+<font size="3">Shop Order: "Attn: Shop Order"
+Licensing: "Attn: Licensing"
+Distribution: "Attn: Distribution"
+Artist Booking: "Attn: Booking"
+Submissions: "Attn: Submissions"
+All Other Inquiries: "Attn: General Inquiry"
+</font>
+
+<font size="2"><br>Our online customer service hours are: Monday - Friday 10:00am to 5:00pm EST 
+We are closed on weekends and holidays.
+Please allow up to 24 hours for a response to your inquiry. 
+Emails sent during non-office hours will be responded to on the next business day. </font>
+{% endcapture %}
+
+{% capture Contact_Submit_Success_Message %}Your message has been sent and we will respond as soon as possible.{% endcapture %}
+
+
+
+
+{{ ------------STYLE------------ }}
+
+<style>
+  
+input, select, textarea{
+    color: #8c8f93;
+}
+
+  </style>
+
+
+
+
+{{ ------------FORM------------ }}
+
+<div id="contact-content">
+
+<div id="contact-intro-text">  
+{{ Contact_Page_Intro_Text | paragraphs }}
+</div>
+  
+  
+{% if contact.sent %}
+  
+  <p id="contact-sent">{{ Contact_Submit_Success_Message }}</p>
+  
+{% else %}
+
+<div id="contact-info" class="span6">
+ <b style="font-weight:bold">{{ store.name }}</b><br>
+{{ Your_Address }}<br>
+{{ City_State_Zip }}<br>
+<br>
+
+  
+{{ Customer_Service_Text | paragraphs }}
+  
+</div>
+  
+  <form id="contact-form" method="post" action="/contact" class="span4">
+    
+    <label for="name"><span>Name</span></label>
+    {{ contact | contact_input: 'name' | replace: "id=", "class='input-xlarge' id="  }}
+    
+    <label for="email"><span>Email</span></label>
+    {{ contact | contact_input: 'email' , 'text', 'jondoe@example.com' | replace: "id=", "class='input-xlarge' id="  }}
+    
+    <label for="subject"><span>Subject</span></label>
+   {{ contact | contact_input: 'subject' | replace: "id=", "class='input-xlarge' id="  }}
+    
+    <label for="message"><span>Message</span></label>
+    {{ contact | contact_input: 'message' | replace: "id=", "class='input-xxlarge' id="  }}
+    
+    <p>Enter the letters from the image in the box below.</p>
+    <label for="captcha">Spam Check</label>
+    <div id="captcha-div">{{ contact.captcha }}</div>
+    {{ contact | contact_input: 'captcha' | replace: "id=", "class='input-xlarge' id="  }}
+      
+    
+    <button id="contact-submit" name="submit" type="submit"><span>Send</span></button>  
+  
+  </form>  
+
+{% endif %}
+  
+</div>
+
+
+​

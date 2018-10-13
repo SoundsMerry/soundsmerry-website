@@ -1,0 +1,287 @@
+{{ ------------BEGIN THEME SETTINGS AND CONTROLS------------ }}
+
+
+{{ ----PRODUCTS DISPLAY SETTINGS---- }}
+
+{% assign: Products_Per_Row = 4 %} 
+
+{% assign: Number_of_Featured_Products = 4 %} 
+
+{% assign: Home_Page_Products_Heading = 'Featured Products' %}
+
+{% assign: Home_Page_Products_Button = 'View More Products' %}
+
+
+{% assign: Regular_Price_Prefix_Text = "Was: " %}
+{% assign: Sale_Price_Prefix_Text = "Now: " %}
+
+{{ ----HOME PAGE BANNER SLIDESHOW SETTINGS---- }}
+
+{% assign: Slideshow_Text_Alignment = 'center' %} {{ Options: 'Left', 'Center', 'Right' }}
+
+
+{{ -- HOME BANNER SETUP -- }}
+
+{% assign: Link_Type = "Button" %} {{ Options: "Image" or "Button" }}
+
+
+
+{{ ------------END THEME SETTINGS AND CONTROLS------------ }}
+
+
+
+
+{{ ------------RESPONSIVE IMAGE MAP BEGIN------------ }}
+
+<script>
+  /**
+ *
+ * Image-Map v1.0.8 (https://www.travismclarke.com)
+ * Copyright 2018 Travis Clarke
+ * License: Apache-2.0
+ *
+ * @preserve
+ */
+
+;(function (root, factory) {
+    if ((!(window && window.document) && !(root && root.document))) {
+        throw new Error("ImageMap requires a window with a document");
+    }
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
+        // CommonJS
+        module.exports = factory(require('jquery'));
+    } else {
+        // Browser globals
+        root.ImageMap = factory(root.jQuery);
+    }
+}(this || window, function ($) {
+    'use strict';
+
+    var ImageMap = function (selector) {
+        var self = this;
+
+        if (!self) { return new ImageMap(selector); }
+
+        self.selector = selector instanceof Array ? selector : [].slice.call(document.querySelectorAll(selector));
+
+        (self.update = function () {
+            self.selector.forEach(function (val) {
+                var img = val,
+                    newImg = document.createElement('img');
+
+                if (typeof img.getAttribute('usemap') === 'undefined') { return; }
+
+                newImg.addEventListener('load', function () {
+                    var clone = new Image();
+                    clone.src = img.getAttribute('src');
+
+                    var w = img.getAttribute('width') || clone.width,
+                        h = img.getAttribute('height') || clone.height,
+                        wPercent = img.offsetWidth / 100,
+                        hPercent = img.offsetHeight / 100,
+                        map = img.getAttribute('usemap').replace('#', ''),
+                        c = 'coords';
+
+                    [].forEach.call(document.querySelectorAll('map[name="' + map + '"] area'), function (val) {
+                        var area = val,
+                            coordsS = area.dataset[c] = area.dataset[c] || area.getAttribute(c),
+                            coordsA = coordsS.split(','),
+                            coordsPercent = Array.apply(null, Array(coordsA.length));
+
+                        coordsPercent.forEach(function (val, i) {
+                            coordsPercent[i] = i % 2 === 0 ? Number(((coordsA[i] / w) * 100) * wPercent) : Number(((coordsA[i] / h) * 100) * hPercent);
+                        });
+                        area.setAttribute(c, coordsPercent.toString());
+                    });
+                });
+                newImg.setAttribute('src', img.getAttribute('src'));
+            });
+        })();
+
+        window.addEventListener('resize', self.update);
+
+        return self;
+    };
+
+    if ($ && $.fn) {
+        $.fn.imageMap = function () {
+            var self = this;
+            return new ImageMap(self.toArray());
+        };
+    }
+    
+    ImageMap.ImageMap = ImageMap;
+    
+    return ImageMap;
+}));
+  </script>
+
+
+<img usemap="#image-map" align="middle" style="width:100%;" src="https://image.ibb.co/b0RLPe/Announcement_2018.jpg">
+
+
+<script>
+  ImageMap('img[usemap]')
+  </script>
+
+
+<map name="image-map">
+    <area target="" alt="Check out the latest Merch..." title="Check out the latest Merch..." href="https://soundsmerry.com/collections/1713054-merch" coords="402,205,607,408" shape="rect">
+    <area target="" alt="Summi Mors &amp;quot;I&amp;quot; is Out Now!" title="Summi Mors &amp;quot;I&amp;quot; is Out Now!" href="https://soundsmerry.com/collections/1713060-summi-mors/products/24599967-summi-mors-i-digital-download" coords="674,204,878,408" shape="rect">
+    <area target="" alt="Hear what is Streaming..." title="Hear what is Streaming..." href="https://soundsmerry.com/stream" coords="952,207,1155,408" shape="rect">
+</map>
+
+
+{{ ------------RESPONSIVE IMAGE MAP END------------ }}
+
+
+
+
+
+{{ --Begin Slideshow Code-- }}
+  
+      
+<div id="wide-slider">
+<div id="home-flex" class="flexslider">
+  <ul class="slides">
+{% for collection in collections.all %} 
+     
+    {% if collection.image != blank and collection.name contains '[slide]' %}
+    
+
+        {% assign link = collection.description | split: '[link]' %}
+    
+          {% capture welcome_link %}{{ link[1] | remove: "::"}}{% endcapture %}
+
+          <li data-index="{{ forloop.index }}"><a href="{{ welcome_link }}"></a><img src="{{ collection.image }}" alt=""></li>
+    
+    {% endif %}
+    
+        {% endfor %}
+
+
+      </ul>
+</div>
+</div>
+
+
+ 
+
+
+{% if Show_Products_On_Home_Page != 'No' %}
+                    
+
+<h3 id="featured-products-text">{{ Home_Page_Products_Heading }}</h3>
+
+{% assign: Products_Margin = 3 %}  {{ Options: 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 }} 
+
+{% assign: ppr = Products_Per_Row %}
+{% assign: pmg = Products_Margin %}
+
+{% capture p_mrgn %}{% if pmg == 0 %}mg-O{% endif %}{% if pmg == 0.5 %}mg-OpV{% endif %}{% if pmg == 1 %}mg-I{% endif %}{% if pmg == 1.5 %}mg-IpV{% endif %}{% if pmg == 2 %}mg-II{% endif %}{% if pmg == 2.5 %}mg-IIpV{% endif %}{% if pmg == 3 %}mg-III{% endif %}{% endcapture %}
+{% capture p_pr %}{% if ppr == 2 %}ii_ipr{% endif %}{% if ppr == 3 %}iii_ipr{% endif %}{% if ppr == 4 %}iv_ipr{% endif %}{% if ppr == 5 %}v_ipr{% endif %}{% endcapture %}
+
+{% if theme.featured_collection != blank %}
+  {% if theme.featured_collection.products != blank %}
+  
+<div class="inner">
+
+<div id="products" class="{{ p_pr }} {{ p_mrgn }}">
+ {% for product in theme.featured_collection.products limit: Number_of_Featured_Products %}
+  <div id="product-{{ forloop.index }}" class="item product span3 {% if ppr == 'two' %}{% cycle '', 'last' %}{% elsif ppr == 'three' %}{% cycle '', '', 'last' %}{% elsif ppr == 'four' %}{% cycle '', '', '', 'last' %}{% elsif ppr == 'five' %}{% cycle '', '', '', '', 'last' %}{% endif %}">
+    <a href="{{ product.url }}" title="View {{ product.name | escape }}" class="product-a">
+                  {% if product.on_sale %}<div id="sale"><span class="onsale">On Sale</span></div>{% endif %}
+                 {% case product.status %}
+                  
+                  {% when 'coming-soon' %}<div id="coming-soon"><span class="soon">Coming Soon</span></div>
+                  {% endcase %}  
+          <img class="product-img" src="{{ product.image | product_image_url }}" alt="Image of {{ product.name | escape }}" />
+                  <span class="stilt"></span>
+      <div class="product-info"><h3 class="product-title"><span>{{ product.name }}</span></h3>
+               <p class="product-price">{% if product.on_sale %}{% if product.max_price != product.default_price and product.on_sale %}<del>{{ Regular_Price_Prefix_Text }}{{ product.max_price | money_with_sign }}</del>{% endif %}{% endif %}<span>{% if product.on_sale %}{% if product.max_price != product.default_price and product.on_sale %}{{ Sale_Price_Prefix_Text }}{% endif %}{% endif %}{{ product.price | money_with_sign }}</span></p>
+                  </div>
+    </a>
+  </div>
+  {% endfor %}
+  <span class="more-button btn"><a href="/products">{{ Home_Page_Products_Button }} </a></span>
+</div>
+
+
+{% else %}
+
+<p class="alert-noproducts"><span>No products found.</span></p>
+
+{% endif %}
+  
+  
+</div>
+
+{% endif %}
+{% endif %}
+
+
+
+  
+
+<style type="text/css">
+body {display:none}  
+{% if Slideshow_Text_Alignment contains 'eft' %}.st-container .flex-caption {text-align: left; float:left}.st-container {float:left}{% endif %}
+{% if Slideshow_Text_Alignment contains 'ight' %}.st-container .flex-caption {text-align: right; float:right}.st-container {float:right}{% endif %}
+</style>
+
+            
+{{ -----BEGIN SLIDESHOW CONFIGURATION---- }}
+
+{% assign: Slide_Heading_Fadein_Delay = '500' %}
+{% assign: Slide_SubHeading_Fadein_Delay = '1000' %}
+{% assign: Slide_ActionText_Fadein_Delay = '1500' %}
+   
+<script type="text/javascript" charset="utf-8">  
+   
+   (function($) {
+      $(document).ready(function(){
+  
+  $("body").fadeIn();
+  
+
+  
+      $('.flexslider').fitVids().flexslider({
+        animation: "slide",
+          useCSS : true,
+         slideshow: true,
+          slideshowSpeed: 5000,
+        animationSpeed: 1000,
+  start: function(slider) {
+            $('body').removeClass('loading');
+          $('.slide-heading').delay({{ Slide_Heading_Fadein_Delay }}).fadeTo({{ Slide_Heading_Fadein_Delay }}, 1);
+          $('.slide-subheading').delay({{ Slide_SubHeading_Fadein_Delay }}).fadeTo({{ Slide_SubHeading_Fadein_Delay }}, 1);
+         $('.slide-action-text').delay({{ Slide_ActionText_Fadein_Delay }}).fadeTo({{ Slide_ActionText_Fadein_Delay }}, 1);
+     },
+     after: function(slider) {
+          $('.slide-heading').delay({{ Slide_Heading_Fadein_Delay }}).fadeTo({{ Slide_Heading_Fadein_Delay }}, 1);
+          $('.slide-subheading').delay({{ Slide_SubHeading_Fadein_Delay }}).fadeTo({{ Slide_SubHeading_Fadein_Delay }}, 1);
+           $('.slide-action-text').delay({{ Slide_ActionText_Fadein_Delay }}).fadeTo({{ Slide_ActionText_Fadein_Delay }}, 1);
+     },
+     before: function(slider) {
+        $(".slide-heading").hide();
+          $(".slide-subheading").hide();
+        $(".slide-action-text").hide();
+    }
+      });
+  
+      $('.slide-heading').hide();
+        $('.slide-subheading').hide();
+        $('.slide-action-text').hide();
+  
+
+    });
+   })(jQuery);
+</script>
+  
+{{ -----END SLIDESHOW CONFIGURATION---- }}
+
+
+​

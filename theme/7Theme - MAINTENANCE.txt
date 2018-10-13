@@ -1,0 +1,55 @@
+{{ ------------BEGIN THEME SETTINGS AND CONTROLS------------ }}
+
+
+  
+{% assign: Maintenance_Message_Heading = "Undergoing Maintenance" %}
+{% assign: Maintenance_Message_Details = "We will be back shortly" %}
+
+{% assign: maintenance_title_tag_lw = "Maintenance" %}
+
+
+
+{{ ------------END THEME SETTINGS AND CONTROLS------------ }}
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<style>
+ img.resize {
+  max-width:65%;
+  max-height:65%;
+} 
+  </style>
+  
+  <center>
+<img class="resize" src="https://image.ibb.co/kDySAK/Sounds_Merry_Drop_Shadowed_White_Logo_with_subtitle.png"><br>
+</center>
+  
+  <title>{{ store.name }}  &mdash;  {{ maintenance_title_tag_lw }}</title>
+  
+  <!-- CSS Edit Page Styles -->
+    <link rel="stylesheet" type="text/css" href="{{ theme | theme_css_url }}">
+
+  <link rel="stylesheet" href="https://s3.amazonaws.com/themefiend/_theme-css-files/maintenance.css" type="text/css">
+    
+  {{ head_content }}
+
+</head>
+ <body id="maintenance-page" class="maintenance theme">
+  
+
+  
+  <div class="maintenance-block" align="center" style="margin:20px;">
+<h1>{% if use_custom_header_logo_image == 'No' %}<span>{{ store.name }}</span>{% else %}<img class="shoplogo" src="{{ Logo_Image }}" />{% endif %}</h1>
+    <h3>{{ Maintenance_Message_Heading }}</font></h3>
+    <p1>{{ Maintenance_Message_Details }}</p1>
+  </div>
+
+  
+  </body>
+</html>
+
+
+​

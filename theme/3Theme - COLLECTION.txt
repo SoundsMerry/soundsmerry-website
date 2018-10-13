@@ -1,0 +1,84 @@
+{{ -----BEGIN SETTINGS AND CONTROLS----- }}
+
+{% assign: Products_per_Page = 12 %}
+
+{% assign: Products_Per_Row = 3 %} {{ Options: 2 to 5 }}
+
+{{ -----END SETTINGS AND CONTROLS----- }}
+
+
+
+{% capture category_page_title %}<div id="page-title-holder"></div>{% endcapture %}
+{% capture category_description %}{% if collection.description != blank %}<div class="cat_desc">{{ collection.description }}</div>{% endif %}{% endcapture %}
+
+
+{{ category_page_title }}{{ category_description }}
+  
+
+
+{% assign: Products_Margin = 3 %}  {{ Options: 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 }} 
+
+{% assign: ppr = Products_Per_Row %}
+{% assign: pmg = Products_Margin %}
+
+{% capture p_mrgn %}{% if pmg == 0 %}mg-O{% endif %}{% if pmg == 0.5 %}mg-OpV{% endif %}{% if pmg == 1 %}mg-I{% endif %}{% if pmg == 1.5 %}mg-IpV{% endif %}{% if pmg == 2 %}mg-II{% endif %}{% if pmg == 2.5 %}mg-IIpV{% endif %}{% if pmg == 3 %}mg-III{% endif %}{% endcapture %}
+{% capture p_pr %}{% if ppr == 2 %}ii_ipr{% endif %}{% if ppr == 3 %}iii_ipr{% endif %}{% if ppr == 4 %}iv_ipr{% endif %}{% if ppr == 5 %}v_ippr{% endif %}{% endcapture %}
+
+
+  
+{% capture pagination_buttons %}{{ paginate | default_pagination, 'pagination' , 'pagination' , '&#9664;' , '&#9654;' | replace: "<a" , "<li><a" | replace: "<span", "<li><span" | replace: "/a>", "/a></li>" | replace: "/span>", "/span></li>" }}{% endcapture %}
+  
+{% if Show_Category_Page_Banners contains 'es' or Show_Artist_Page_Banners contains 'es' %}{% if Category_Title_Position_to_Banner contains 'bove' and Category_Banner_Width_Type contains 'ontained' %}<span class="pagination_adjuster"></span>{% endif %}{% endif %}
+
+ {% if products != blank %}
+
+  
+  {{ pagination_buttons }}
+
+
+<div id="products" class="{{ p_pr }} {{ p_mrgn }}">
+
+  {% for product in products.current limit: Products_per_Page %}
+  <div id="product-{{ forloop.index }}" class="item product {% if ppr == 'two' %}{% cycle '', 'last' %}{% elsif ppr == 'three' %}{% cycle '', '', 'last' %}{% elsif ppr == 'four' %}{% cycle '', '', '', 'last' %}{% elsif ppr == 'five' %}{% cycle '', '', '', '', 'last' %}{% endif %}">       
+    <a href="{{ product.url }}" title="View {{ product.name | escape }}" class="product-a">
+                 {% if product.on_sale %}<div id="sale"><span class="onsale">On Sale</span></div>{% endif %}
+                 {% case product.status %}
+                  
+                  {% when 'coming-soon' %}<div id="coming-soon"><span class="soon">Coming Soon</span></div>
+                  {% endcase %}                  <img class="product-img" src="{{ product.image | product_image_url }}" alt="Image of {{ product.name | escape }}" />
+                  
+                  <span class="stilt"></span>
+
+                  
+      <div class="product-info">
+        <h3 class="product-title"><span>{{ product.name }}</span></h3>
+        <p class="product-price">{% if product.on_sale %}{% if product.max_price != product.default_price and product.on_sale %}<del>{{ product.max_price | money_with_sign }}</del>{% endif %}{% endif %}<span>{{ product.price | money_with_sign }}</span></p>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+
+  </div>
+
+{{ pagination_buttons }}
+
+{% else %}
+
+<p class="alert-noproducts"><span>No products found.</span></p>
+{% endif %}
+
+
+  
+
+<script type="text/javascript" charset="utf-8">  
+   
+   (function($) {
+      $(document).ready(function(){
+  
+ 
+    });
+   })(jQuery);
+</script>
+
+
+​
